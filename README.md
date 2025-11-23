@@ -1,35 +1,37 @@
 # FraudLM – Fraud Detection with LLM-Powered Explainability
 
-**Status**: Work in progress (WIP).
+**Status**: Early-stage work in progress (WIP) / experimental.
 
-FraudLM combines classical fraud detection models with **Large Language Models (LLMs)** to deliver human-readable explanations. The system covers the full lifecycle: from data and experimentation in notebooks (tracked with MLflow), to a deployed XGBoost model with SHAP analysis, enhanced by an LLM that translates technical outputs into natural language for both analysts and customers—all served via FastAPI and a Streamlit dashboard.
+FraudLM is an experimental project exploring how to combine classical fraud detection models with **Large Language Models (LLMs)** to deliver human-readable explanations. The sections below describe the **intended** architecture and experiments; many components are not yet implemented or are only partial prototypes and may change significantly.
 
 ---
 
 ## Features
 
+> Note: This section describes the **target** feature set; many items are still **planned** or only partially implemented.
+
 ### Core System
-- **End-to-end pipeline**  
+- **End-to-end pipeline (in progress / planned)**  
   From raw transaction data → experiments → deployed model + LLM-powered dashboard.
 
-- **Fraud detection models**  
-  - Baselines: Logistic Regression, XGBoost.
-  - Extended experiments: CatBoost, FT-Transformer, GraphSAGE (planned).
+- **Fraud detection models (in progress / planned)**  
+  - Baselines (planned): Logistic Regression, XGBoost.
+  - Extended experiments (planned): CatBoost, FT-Transformer, GraphSAGE.
 
-- **LLM-powered explainability (the "LM" in FraudLM)**  
-  - **SHAP** provides technical feature importance.
-  - **LLM** translates SHAP outputs into natural language explanations tailored for:
+- **LLM-powered explainability (planned; the "LM" in FraudLM)**  
+  - Intended use of **SHAP** to provide technical feature importance.
+  - Planned **LLM** component to translate SHAP outputs into natural language explanations tailored for:
     - **Analysts**: technical, precise explanations with key risk drivers.
     - **Customers**: simple, reassuring messages about flagged transactions.
-  - Dual-audience explanations surfaced in real-time via the dashboard.
+  - Dual-audience explanations intended to be surfaced in real-time via the dashboard.
 
-- **Experiment tracking with MLflow**  
-  - All model runs logged with params, metrics, and artifacts.
-  - Side-by-side comparison of models, feature sets, and training setups.
+- **Experiment tracking with MLflow (planned)**  
+  - Experiments are planned to be logged with params, metrics, and artifacts.
+  - Side-by-side comparison of models, feature sets, and training setups (planned).
 
-- **Application layer**  
-  - FastAPI backend with `/predict` and `/explain` endpoints.
-  - Streamlit dashboard with analyst and customer explanation views.
+- **Application layer (planned)**  
+  - Planned FastAPI backend with `/predict` and `/explain` endpoints.
+  - Planned Streamlit dashboard with analyst and customer explanation views.
 
 ### Research Extensions
 - **CTGAN-based synthetic data generation**  
@@ -39,6 +41,8 @@ FraudLM combines classical fraud detection models with **Large Language Models (
 ---
 
 ## Architecture Overview
+
+> Note: This is the **intended** architecture. The current codebase only partially implements these components and the structure may change.
 
 The project is split into three main layers:
 
@@ -71,7 +75,7 @@ For experimentation, the dataset is split into train/validation/test sets, with 
 
 ## Experiments & MLflow
 
-All experiments are driven from Jupyter notebooks and tracked with MLflow.
+All experiments are **intended** to be driven from Jupyter notebooks and tracked with MLflow. The notebook list and tiers below describe the planned experiment structure; some notebooks or experiments may not exist yet or may be incomplete.
 
 ### Core notebooks:
 - `01_eda_dataset_overview.ipynb` – Data exploration and leakage checks.
@@ -103,7 +107,7 @@ All experiments are driven from Jupyter notebooks and tracked with MLflow.
 
 ## Application: API and Dashboard
 
-Once a model is selected from experiments:
+This section describes the **planned** application layer. Once a model is selected from experiments, the goal is to provide:
 
 - **FastAPI service**  
   - Loads the deployed XGBoost model and SHAP explainer.
@@ -120,7 +124,7 @@ Once a model is selected from experiments:
 
 ## Synthetic Data Experiments with CTGAN
 
-FraudLM includes experiments on using **CTGAN** ([GitHub](https://github.com/sdv-dev/CTGAN), [paper](https://papers.neurips.cc/paper/8953-modeling-tabular-data-using-conditional-gan)) to address rarity and privacy:
+FraudLM is planned to include experiments on using **CTGAN** ([GitHub](https://github.com/sdv-dev/CTGAN), [paper](https://papers.neurips.cc/paper/8953-modeling-tabular-data-using-conditional-gan)) to address rarity and privacy:
 
 ### CTGAN training
 - Train CTGAN on real training data to generate realistic synthetic transaction records.
@@ -130,7 +134,7 @@ FraudLM includes experiments on using **CTGAN** ([GitHub](https://github.com/sdv
 - Inspect how well CTGAN captures the minority (fraud) class.
 
 ### Utility experiments (always evaluated on real test data)
-Train models under three setups:
+Planned experiments will train models under three setups:
 - **Real-only training**
 - **Synthetic-only training**
 - **Real + synthetic (augmentation / oversampling)**
@@ -139,11 +143,13 @@ Compare downstream performance on the real test set to quantify:
 - How much utility synthetic data provides.
 - Whether augmentation helps with rare fraud cases.
 
-These experiments live primarily in dedicated notebooks (`06_ctgan_synthetic_data.ipynb`, `07_synthetic_vs_real_models.ipynb`) and MLflow experiments, and do not change the core app, which is always trained on real data.
+These experiments are planned to live primarily in dedicated notebooks (`06_ctgan_synthetic_data.ipynb`, `07_synthetic_vs_real_models.ipynb`) and MLflow experiments, and do not change the core app, which is always trained on real data.
 
 ---
 
 ## Project Structure
+
+> Note: This is the **intended** layout. Early-stage versions of this repo may not yet include all of these folders/files.
 
 ```
 FraudLM/
@@ -170,6 +176,8 @@ FraudLM/
 ---
 
 ## Getting Started
+
+> Note: This section reflects the planned developer experience. In the current early-stage state some commands or paths may need adjustment.
 
 ### 1. Setup
 
